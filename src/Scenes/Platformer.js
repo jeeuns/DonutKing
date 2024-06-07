@@ -68,7 +68,7 @@ class Platformer extends Phaser.Scene {
             collides: true,
         });
 
-        //SCENE PROPERTY FOR COLLISION
+    //--------------SCENE PROPERTY FOR COLLISION-----------------------------------
 
         this.groundLayer.setTileLocationCallback(0, 0, this.map.width, this.map.height, (sprite, tile) => {
             if (tile.properties.water) {
@@ -81,21 +81,21 @@ class Platformer extends Phaser.Scene {
         }, this);
 
 //-----------------COLLECTIBLE------------------------------------------------------------------
-        this.coins = this.map.createFromObjects("Objects", {
-            name: "coins",
-            key: "tilemap_sheet",
-            frame: 151
+        this.donut = this.map.createFromObjects("Objects", {
+            name: "donut",
+            key: "tilemap_sheet_food",
+            frame: 14
         });
+        
+        //frame 14 is the pink donut
         
         // Since createFromObjects returns an array of regular Sprites, we need to convert 
         // them into Arcade Physics sprites (STATIC_BODY, so they don't move) 
-        this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.world.enable(this.donut, Phaser.Physics.Arcade.STATIC_BODY);
 
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-
-        // Create a Phaser group out of the array this.coins
         // This will be used for collision detection below.
-        this.coinGroup = this.add.group(this.coins);
+        this.donutGroup = this.add.group(this.donut);
 
         // set up player avatar x,y
         my.sprite.player = this.physics.add.sprite(this.map.widthInPixels/2, 2600, "player", "player.png");
@@ -106,10 +106,13 @@ class Platformer extends Phaser.Scene {
         this.physics.add.collider(my.sprite.player, this.farmLayer);
         this.physics.add.collider(my.sprite.player, this.foodLayer);
 
+//-------END CONDITION FOR EATING THE PINK DONUT---------------------------------------------------------
         // Handle collision detection with coins
-        this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
+        this.physics.add.overlap(my.sprite.player, this.donutGroup, (obj1, obj2) => {
             obj2.destroy(); // remove coin on overlap
             this.coinpick.play();
+            this.backgroundMusic.stop();
+            this.scene.start('winScene');
         });
     
 //------------KEYBOARD-------------------------------------------------------------------------------------------
