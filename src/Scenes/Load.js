@@ -14,6 +14,10 @@ class Load extends Phaser.Scene {
         this.load.image('player','player.png');
         this.load.image('player1','player1.png');
 
+        // Load enemies
+        this.load.image('enemy', 'enemy1.png');
+        this.load.image('enemy1', 'enemy1-1.png');
+
         //font
         this.load.bitmapFont("rocketSquare", "KennyRocketSquare_0.png", "KennyRocketSquare.fnt");
 

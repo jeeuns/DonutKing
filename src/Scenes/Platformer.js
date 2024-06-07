@@ -132,10 +132,10 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setFlip(true);
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.anims.play('walk', true);
-            my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
-            my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
+            // my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
+            // my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
             if (my.sprite.player.body.blocked.down) {
-                my.vfx.walking.start();
+                //my.vfx.walking.start();
             }
         }, this);
 
@@ -143,7 +143,7 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setAccelerationX(0);
             my.sprite.player.setDragX(this.DRAG);
             my.sprite.player.anims.play('idle');
-            my.vfx.walking.stop();
+            //my.vfx.walking.stop();
         }, this);
 
         this.input.keyboard.on('keydown-D', () => {
@@ -183,13 +183,13 @@ class Platformer extends Phaser.Scene {
 
 //--------movement vfx---------------------------------------------------------------------------------------------
 
-        my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
-            //frame: ['circle_01.png', 'spark_03.png'],
-            scale: {start: 0.03, end: 0.1},
-            lifespan: 350,
-            alpha: {start: 1, end: 0.1}, 
-        });
-        my.vfx.walking.stop();
+        // my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
+        //     frame: ['circle_01.png', 'spark_03.png'],
+        //     scale: {start: 0.03, end: 0.1},
+        //     lifespan: 350,
+        //     alpha: {start: 1, end: 0.1}, 
+        // });
+        // my.vfx.walking.stop();
 
         //jump particle
         my.vfx.jumping = this.add.particles(0, 0, "kenny-particles", {
@@ -215,31 +215,29 @@ class Platformer extends Phaser.Scene {
         this.backgroundMusic.play({ loop: true });
 
 //---------------ENEMY SET UP------------------------------------------
-        // //Enemy
-        // my.enemygroup = this.add.group({
-        //     classType: Enemy,
-        //     maxSize: 100,
-        //     // activate update calls
-        //     runChildUpdate: true,
-        // });
-        // my.enemySpawn = this.map.createFromObjects("Objects", {
-        //     type: "enemSpawn",
-        //     key: "platformer_characters",
-        //     frame: "enemy",
-        // });
-        // my.enemySpawn.map((enemy) => {
-        //     enemy.scale = SCALE;
-        //     enemy.x *= SCALE;
-        //     enemy.y *= SCALE;
+        this.enemies = this.physics.add.group({
+            classType: Enemy,
+            runChildUpdate: true
+        });
 
-        //     let newEnemy = new Enemy(this, enemy.x, enemy.y, "enemy.png");
-        //     newEnemy.facing = enumList.LEFT;
-        //     newEnemy.anims.play("enemy1");
-        //     my.enemygroup.add(newEnemy);
-        //     enemy.destroy();//Refactor possibility
-        // });
+        // Example enemy positions and patrol distances
+        this.enemies.add(new Enemy(this, 400, 300, 'enemy', 200));
+        this.enemies.add(new Enemy(this, 600, 300, 'enemy', 300));
+
+        // Add collision detection between player and enemies
+        this.physics.add.collider(my.sprite.player, this.enemies, this.handlePlayerEnemyCollision, null, this);
 
     }
+//ENEMY HANDLER----------------------------------------------------
+
+    handlePlayerEnemyCollision(player, enemy) {
+        if (enemy.body.velocity.x > 0) {
+            player.setVelocityX(200);  // Adjust the push force as needed
+        } else {
+            player.setVelocityX(-200);  // Adjust the push force as needed
+        }
+    }
+
 
     update() {
 
@@ -260,6 +258,8 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.anims.play('jump');
             my.sprite.player.setScale(2.0);
             my.vfx.jumping.start();
+        } else {
+            my.vfx.jumping.stop();
         }
         // -------------GAME RESET ---------------------------------------------
         if (Phaser.Input.Keyboard.JustDown(this.rKey)) {
