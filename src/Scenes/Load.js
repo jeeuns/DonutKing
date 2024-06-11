@@ -89,8 +89,8 @@ class Load extends Phaser.Scene {
          this.anims.create({
             key: 'enemy1',
             frames: [
-                { key: 'enemy1.png' },
-                { key: 'enemy1-1.png' }
+                { key: 'enemy.png' },
+                { key: 'enemy1.png' }
             ],
         });
     }

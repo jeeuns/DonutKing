@@ -1,5 +1,6 @@
 **Platformer**
 Visual assets courtesy of [Kenny Assets](https://kenney.nl/assets), with gratitude.
+UI assets by Kenney Assets: https://kenney.nl/assets/input-prompts
 all background artwork by me.
 
 AUDIO

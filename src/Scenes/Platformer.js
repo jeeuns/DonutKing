@@ -6,12 +6,12 @@ class Platformer extends Phaser.Scene {
     init() {
         // variables and settings
         this.ACCELERATION = 400;
-        // this.DRAG = 500;    // DRAG < ACCELERATION = icy slide
-        this.DRAG = 800;    // DRAG < ACCELERATION = icy slide
+        this.DRAG = 200;    // DRAG < ACCELERATION = icy slide
+        //this.DRAG = 800;    // DRAG < ACCELERATION = icy slide
         this.physics.world.gravity.y = 1500; //higher = smaller jump
         this.JUMP_VELOCITY = -600;
         this.PARTICLE_VELOCITY = 50;
-        this.SCALE = 2.0;
+        this.SCALE = 2.5;
         this.SCORE = 0;
 
     }
@@ -21,6 +21,9 @@ class Platformer extends Phaser.Scene {
         this.load.setPath("./assets/");
         this.load.audio('coinpick', 'coinpick.flac');
         this.coinpick = this.sound.add('coinpick');
+
+        this.load.image('enemy', 'enemy1.png');
+        this.load.image('enemy1', 'enemy1-1.png');
 
         this.load.audio('bgmusic', 'bg.wav');
 
@@ -118,14 +121,7 @@ class Platformer extends Phaser.Scene {
 //------------KEYBOARD-------------------------------------------------------------------------------------------
         // set up Phaser-provided cursor key input
         cursors = this.input.keyboard.createCursorKeys();
-
         this.rKey = this.input.keyboard.addKey('R');
-
-        // debug key listener (assigned to D key)
-        this.input.keyboard.on('keydown-F', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
 
         this.input.keyboard.on('keydown-A', () => {
             my.sprite.player.setScale(2.0);
@@ -170,6 +166,8 @@ class Platformer extends Phaser.Scene {
                 my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
                 this.jumpSound.play();
                 my.vfx.jumping.start();
+            } else {
+                my.vfx.jumping.stop();
             }
         }, this);
 
@@ -178,6 +176,8 @@ class Platformer extends Phaser.Scene {
                 my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
                 this.jumpSound.play();
                 my.vfx.jumping.start();
+            } else {
+                my.vfx.jumping.stop();
             }
         }, this);
 
@@ -215,29 +215,63 @@ class Platformer extends Phaser.Scene {
         this.backgroundMusic.play({ loop: true });
 
 //---------------ENEMY SET UP------------------------------------------
-        this.enemies = this.physics.add.group({
+        // Enemy
+        my.enemygroup = this.add.group({
             classType: Enemy,
-            runChildUpdate: true
+            maxSize: 100,
+            // activate update calls
+            runChildUpdate: true,
         });
 
-        // Example enemy positions and patrol distances
-        this.enemies.add(new Enemy(this, 400, 300, 'enemy', 200));
-        this.enemies.add(new Enemy(this, 600, 300, 'enemy', 300));
+        my.enemySpawn = this.map.createFromObjects("Objects", {
+            type: "enemSpawn",
+            key: "enemy",
+            frame: "enemy1",
+        });
 
-        // Add collision detection between player and enemies
-        this.physics.add.collider(my.sprite.player, this.enemies, this.handlePlayerEnemyCollision, null, this);
+        my.enemySpawn.map((enemy) => {
+            enemy.scale = SCALE;
+            enemy.x *= SCALE;
+            enemy.y *= SCALE;
+
+            let newEnemy = new Enemy(this, enemy.x, enemy.y, "enemy", "enemy1.png");
+            newEnemy.facing = enumList.LEFT;
+            newEnemy.anims.play("enemy1");
+            my.enemygroup.add(newEnemy);
+            enemy.destroy(); // Refactor possibility
+        });
+
+        // enemy overlap
+        this.physics.add.overlap(my.sprite.player, my.enemygroup, (obj1, obj2) => {
+            // Push player away, first remove current momentum, and set flag
+            if (!obj1.knockback) {
+                obj1.body.setAccelerationX(0);
+                obj1.knockback = true;
+                obj1.setAngularVelocity(0);
+
+                // Determine knockback vector
+                if (obj1.x < obj2.x) {
+                    obj1.body.setVelocity(-900, -600);
+                } else {
+                    obj1.body.setVelocity(900, -600);
+                }
+
+                // Give player a nudge to slow down a bit
+                obj1.body.setDragX(this.DRAG);
+                obj1.body.setAccelerationY(10);
+
+                this.sound.play("bwah", { rate: 1.5, detune: 200 });
+
+                // Either remove knockback after timer or on grounded
+                this.time.delayedCall(475, () => {
+                    my.sprite.player.knockback = false;
+                });
+            }
+        });
+//------Movement Instructions-----------------------------------------------------------------------------------------
+        
 
     }
-//ENEMY HANDLER----------------------------------------------------
-
-    handlePlayerEnemyCollision(player, enemy) {
-        if (enemy.body.velocity.x > 0) {
-            player.setVelocityX(200);  // Adjust the push force as needed
-        } else {
-            player.setVelocityX(-200);  // Adjust the push force as needed
-        }
-    }
-
 
     update() {
 
@@ -247,10 +281,6 @@ class Platformer extends Phaser.Scene {
 
         this.bgLayer2.tilePositionX = this.cameras.main.scrollX * 0.5;
         this.bgLayer2.tilePositionY = this.cameras.main.scrollY * 0.5;
-        this.input.keyboard.on('keydown-F', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
 
         // --------------Player jump-------------------------------------------
 

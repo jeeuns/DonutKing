@@ -12,9 +12,63 @@
     <script src="./src/Scenes/Victory.js"></script>
     <script src="./src/Scenes/enemy.js"></script>
     <script src="./src/main.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black; /* Set background color to black */
+        }
+        #phaser-game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -230px; /* Adjust this value based on your layout */
+        }
+        .controls .pyramid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .controls .pyramid .row {
+            display: flex;
+        }
+        .controls .pyramid .row img {
+            margin: 5px;
+        }
+        .controls .pyramid .space {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="phaser-game"></div>
+    <div id="phaser-game-container">
+        <div id="phaser-game"></div>
+        <div class="controls">
+            <div class="pyramid">
+                <div class="row">
+                    <img src="assets/keyboard_w.png" alt="W Key">
+                </div>
+                <div class="row">
+                    <img src="assets/keyboard_a.png" alt="A Key">
+                    <img src="assets/keyboard_s.png" alt="S Key">
+                    <img src="assets/keyboard_d.png" alt="D Key">
+                </div>
+                <div class="row space">
+                    <img src="assets/keyboard_space.png" alt="SPACE Key">
+                </div>
+            </div>
+        </div>
+    </div>
     <span id="description"></span>
 </body>
 </html>

@@ -21,20 +21,37 @@ class Victory extends Phaser.Scene {
         // my.text.title.setScale(2.0);
 
         //text
-        this.add.text(1200, 350, "You Win!", {
+        this.add.text(1200, 350, "You Win", {
             fontFamily: 'Arial',
-            fontSize: '64px',
+            fontSize: '128px',
             fontStyle: 'bold',
             fontWeight: 'bold',
-            fill: '#00000'
+            fill: 'black'
         }).setOrigin(0.5, 0.5); // Center the text
 
-        this.add.text(1200, 400, 'Press SPACE to play again!', {
+        let hoveringText = this.add.text(1200, 350, "You Win", {
+            fontFamily: 'Arial',
+            fontSize: '128px',
+            fontStyle: 'bold',
+            fontWeight: 'bold',
+            fill: 'white'
+        }).setOrigin(0.5, 0.5); // Center the text
+
+        this.tweens.add({
+            targets: hoveringText,
+            y: hoveringText.y - 15 ,  // Amount to move up
+            duration: 1000,         // Duration in milliseconds
+            ease: 'Sine.easeInOut', // Easing function
+            yoyo: true,             // Make it come back to the original position
+            repeat: -1              // Repeat forever
+        });
+
+        this.add.text(1200, 410, 'Press SPACE to play again!', {
             fontFamily: 'Arial',
             fontSize: '32px',
             fontWeight: 'bold',
             fontStyle: 'bold',
-            fill: '#00000'
+            fill: 'white'
         }).setOrigin(0.5, 0.5);
 
         // Set up input to start the game

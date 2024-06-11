@@ -22,17 +22,26 @@ class GameOver extends Phaser.Scene {
         // my.text.title.setScale(2.0);
 
         //text
-        this.add.text(720, 250, "You Lost", {
+        let hoveringText = this.add.text(720, 250, "YOU LOST!", {
             fontFamily: 'Arial',
-            fontSize: '64px',
-            fontStyle: 'italic',
+            fontSize: '164px',
+            fontStyle: 'bold',
             fontWeight: 'bold',
             fill: '#ffffff'
         }).setOrigin(0.5, 0.5); // Center the text
 
-        this.add.text(720, 300, 'Press SPACE to play again.', {
+        this.tweens.add({
+            targets: hoveringText,
+            y: hoveringText.y - 20,  // Amount to move up
+            duration: 1000,         // Duration in milliseconds
+            ease: 'Sine.easeInOut', // Easing function
+            yoyo: true,             // Make it come back to the original position
+            repeat: -1              // Repeat forever
+        });
+
+        this.add.text(720, 380, 'Press SPACE to play again.', {
             fontFamily: 'Arial',
-            fontSize: '32px',
+            fontSize: '48px',
             fontWeight: 'bold',
             fill: '#ffffff'
         }).setOrigin(0.5, 0.5);
