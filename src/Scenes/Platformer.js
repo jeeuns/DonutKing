@@ -83,6 +83,13 @@ class Platformer extends Phaser.Scene {
             }
         }, this);
 
+        this.groundLayer.forEachTile(tile => {
+            if (tile.properties.water) {
+                const waterTile = this.add.sprite(tile.getCenterX(), tile.getCenterY(), 'water').setOrigin(0.5, 0.5);
+                waterTile.play('water');
+                tile.setAlpha(0); // Optionally make the original tile invisible if you want only the animated sprite to be visible
+            }
+        });
 //-----------------COLLECTIBLE------------------------------------------------------------------
         this.donut = this.map.createFromObjects("Objects", {
             name: "donut",
@@ -128,11 +135,6 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.setFlip(true);
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.anims.play('walk', true);
-            // my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
-            // my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-            if (my.sprite.player.body.blocked.down) {
-                //my.vfx.walking.start();
-            }
         }, this);
 
         this.input.keyboard.on('keyup-A', () => {
@@ -161,12 +163,12 @@ class Platformer extends Phaser.Scene {
             my.vfx.walking.stop();
         }, this);
 
-        this.input.keyboard.on('keydown-W', () => {
+        this.input.keyboard.on('keydown-SPACE', () => {
             if (my.sprite.player.body.blocked.down) {
                 my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
-                my.sprite.player.anims.play('walk', true);
+                my.sprite.player.anims.play('jump', true);
                 my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
-                my.vfx.jumpinh.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
+                my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
                 this.jumpSound.play();
                 if (my.sprite.player.body.blocked.down) {
                     my.vfx.jumping.start();
@@ -174,12 +176,12 @@ class Platformer extends Phaser.Scene {
             }
         }, this);
 
-        this.input.keyboard.on('keydown-SPACE', () => {
+        this.input.keyboard.on('keydown-W', () => {
             if (my.sprite.player.body.blocked.down) {
                 my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
-                my.sprite.player.anims.play('walk', true);
+                my.sprite.player.anims.play('jump', true);
                 my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
-                my.vfx.jumpinh.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
+                my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
                 this.jumpSound.play();
                 if (my.sprite.player.body.blocked.down) {
                     my.vfx.jumping.start();
@@ -195,8 +197,9 @@ class Platformer extends Phaser.Scene {
             scale: { start: 0.06, end: 0.1 },
             lifespan: 350,
             alpha: { start: 1, end: 0.1 },
+            on: false
         });
-        my.vfx.jumping.stop();
+        //my.vfx.jumping.stop();
 
 //----------------------------------------------------------------------------------------------------------------
         //CAMERA MOVEMENT

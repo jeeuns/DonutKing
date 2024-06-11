@@ -18,6 +18,10 @@ class Load extends Phaser.Scene {
         this.load.image('enemy', 'enemy1.png');
         this.load.image('enemy1', 'enemy1-1.png');
 
+        //water
+        this.load.image('water1', 'water1.png');
+        this.load.image('water2', 'water2.png');
+
         //font
         this.load.bitmapFont("rocketSquare", "KennyRocketSquare_0.png", "KennyRocketSquare.fnt");
 
@@ -82,17 +86,27 @@ class Load extends Phaser.Scene {
             ],
         });
 
-         // ...and pass to the next Scene
-         this.scene.start("startScene");
+        this.anims.create({
+            key: 'water',
+            frames: [
+                { key: 'water1' },
+                { key: 'water2' }
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
 
-         //enemy animations
-         this.anims.create({
+        //enemy animations
+        this.anims.create({
             key: 'enemy1',
             frames: [
                 { key: 'enemy.png' },
                 { key: 'enemy1.png' }
             ],
         });
+
+         // ...and pass to the next Scene
+         this.scene.start("startScene");
     }
 
     // Never get here since a new scene is started in create()

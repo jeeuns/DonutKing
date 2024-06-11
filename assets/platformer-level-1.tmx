@@ -162,7 +162,7 @@
   </tile>
   <tile id="73">
    <properties>
-    <property name="water" type="bool" value="true"/>
+    <property name="water" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="80">
