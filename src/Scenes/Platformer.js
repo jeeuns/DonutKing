@@ -164,32 +164,30 @@ class Platformer extends Phaser.Scene {
         this.input.keyboard.on('keydown-W', () => {
             if (my.sprite.player.body.blocked.down) {
                 my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+                my.sprite.player.anims.play('walk', true);
+                my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
+                my.vfx.jumpinh.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
                 this.jumpSound.play();
-                my.vfx.jumping.start();
-            } else {
-                my.vfx.jumping.stop();
+                if (my.sprite.player.body.blocked.down) {
+                    my.vfx.jumping.start();
+                }
             }
         }, this);
 
         this.input.keyboard.on('keydown-SPACE', () => {
             if (my.sprite.player.body.blocked.down) {
                 my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+                my.sprite.player.anims.play('walk', true);
+                my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
+                my.vfx.jumpinh.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
                 this.jumpSound.play();
-                my.vfx.jumping.start();
-            } else {
-                my.vfx.jumping.stop();
+                if (my.sprite.player.body.blocked.down) {
+                    my.vfx.jumping.start();
+                }
             }
         }, this);
 
 //--------movement vfx---------------------------------------------------------------------------------------------
-
-        // my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
-        //     frame: ['circle_01.png', 'spark_03.png'],
-        //     scale: {start: 0.03, end: 0.1},
-        //     lifespan: 350,
-        //     alpha: {start: 1, end: 0.1}, 
-        // });
-        // my.vfx.walking.stop();
 
         //jump particle
         my.vfx.jumping = this.add.particles(0, 0, "kenny-particles", {
