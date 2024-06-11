@@ -48,16 +48,21 @@ class GameOver extends Phaser.Scene {
 
         // Set up input to start the game
         this.input.keyboard.on('keydown-SPACE', () => {
+            this.backgroundMusic.stop();
             this.scene.start('platformerScene');
         });
 
         this.input.on('pointerdown', () => {
+            this.backgroundMusic.stop();
             this.scene.start('platformerScene');
         });
 
         // Play background music
         this.backgroundMusic = this.sound.add('gameover');
-        this.backgroundMusic.play({ loop: false });
+        this.backgroundMusic.play({
+            loop: false,
+            volume: 0.4 // Adjust the volume level as needed (0.1 = 10% volume)
+        });
 
     }
     

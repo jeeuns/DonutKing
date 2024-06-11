@@ -501,18 +501,6 @@
                  "width":18,
                  "x":558.333,
                  "y":135.667
-                }, 
-                {
-                 "gid":195,
-                 "height":18,
-                 "id":182,
-                 "name":"donut",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":18,
-                 "x":287.667,
-                 "y":2627.67
                 }],
          "opacity":1,
          "type":"objectgroup",

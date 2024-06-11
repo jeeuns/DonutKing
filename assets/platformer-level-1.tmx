@@ -1306,6 +1306,5 @@
  </layer>
  <objectgroup id="15" name="Objects">
   <object id="181" name="donut" gid="195" x="558.333" y="135.667" width="18" height="18"/>
-  <object id="182" name="donut" gid="195" x="287.667" y="2627.67" width="18" height="18"/>
  </objectgroup>
 </map>

@@ -26,6 +26,7 @@ class Platformer extends Phaser.Scene {
         this.load.image('enemy1', 'enemy1-1.png');
 
         this.load.audio('bgmusic', 'bg.wav');
+        this.load.audio('victoryMusic', 'victory.wav');
 
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
@@ -169,7 +170,10 @@ class Platformer extends Phaser.Scene {
                 my.sprite.player.anims.play('jump', true);
                 my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
                 my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-                this.jumpSound.play();
+                this.jumpSound.play({
+                    loop: false,
+                    volume: 0.4 // Adjust the volume level as needed (0.1 = 10% volume)
+                });
                 if (my.sprite.player.body.blocked.down) {
                     my.vfx.jumping.start();
                 }
@@ -182,7 +186,10 @@ class Platformer extends Phaser.Scene {
                 my.sprite.player.anims.play('jump', true);
                 my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
                 my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
-                this.jumpSound.play();
+                this.jumpSound.play({
+                    loop: false,
+                    volume: 0.4 // Adjust the volume level as needed (0.1 = 10% volume)
+                });
                 if (my.sprite.player.body.blocked.down) {
                     my.vfx.jumping.start();
                 }
@@ -213,7 +220,13 @@ class Platformer extends Phaser.Scene {
 
         // Play background music
         this.backgroundMusic = this.sound.add('bgmusic');
-        this.backgroundMusic.play({ loop: true });
+        this.backgroundMusic.play({
+            loop: true,
+            volume: 0.4 // Adjust the volume level as needed (0.1 = 10% volume)
+        });
+
+        //victory sound
+        this.victorySound = this.sound.add('victoryMusic');
 
 //---------------ENEMY SET UP------------------------------------------
         // Enemy

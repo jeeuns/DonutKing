@@ -4,7 +4,6 @@ UI assets by Kenney Assets: https://kenney.nl/assets/input-prompts
 all background artwork by me.
 
 AUDIO
-Game background music from ZHRO: https://freesound.org/people/ZHR%C3%98/sounds/668879/ 
-Game Over sound from EVRetro: https://freesound.org/people/EVRetro/sounds/533034/
+Game background music, gameover, and victory background music by: Mrthenoronha
 Coin Pickup Sound from plasterbrain: https://freesound.org/people/plasterbrain/sounds/608431/
 Jump sound by plasterbrain: https://freesound.org/people/plasterbrain/sounds/399095/
